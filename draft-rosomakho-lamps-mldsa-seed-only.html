@@ -4,12 +4,14 @@
 <meta charset="utf-8">
 <meta content="Common,Latin" name="scripts">
 <meta content="initial-scale=1.0" name="viewport">
-<title>Deprecating Expanded ML-DSA Private Key Encodings</title>
+<title>Deprecating Expanded ML-DSA and ML-KEM Private Key Encodings</title>
 <meta content="Yaroslav Rosomakho" name="author">
+<meta content="David Benjamin" name="author">
 <meta content="
-       This document updates RFC 9881 to require the seed representation when
-encoding Module-Lattice-Based Digital Signature Algorithm (ML-DSA) private
-keys for interchange. It deprecates the expandedKey and both
+       This document updates RFC 9881 and RFC 9935 to require the seed representation
+when encoding Module-Lattice-Based Digital Signature Algorithm (ML-DSA) and
+Module-Lattice-Based Key-Encapsulation Mechanism (ML-KEM) private
+keys for interchange. It deprecates the expanded and combined
 representations, while permitting their continued support for legacy
 imports. These changes simplify implementation and improve
 interoperability by aligning the private-key representation with that
@@ -1049,12 +1051,12 @@ svg {
 <table class="ears">
 <thead><tr>
 <td class="left">Internet-Draft</td>
-<td class="center">Deprecating Expanded ML-DSA Private Key </td>
+<td class="center">Deprecating Expanded ML-DSA and ML-KEM P</td>
 <td class="right">October 2026</td>
 </tr></thead>
 <tfoot><tr>
-<td class="left">Rosomakho</td>
-<td class="center">Expires 18 April 2027</td>
+<td class="left">Rosomakho &amp; Benjamin</td>
+<td class="center">Expires 19 April 2027</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1067,30 +1069,35 @@ svg {
 <dd class="internet-draft">draft-rosomakho-lamps-mldsa-seed-only-latest</dd>
 <dt class="label-updates">Updates:</dt>
 <dd class="updates">
-<a href="https://www.rfc-editor.org/rfc/rfc9881" class="eref">9881</a> (if approved)</dd>
+<a href="https://www.rfc-editor.org/rfc/rfc9881" class="eref">9881</a>, <a href="https://www.rfc-editor.org/rfc/rfc9935" class="eref">9935</a> (if approved)</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2026-10-15" class="published">15 October 2026</time>
+<time datetime="2026-10-16" class="published">16 October 2026</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Standards Track</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2027-04-18">18 April 2027</time></dd>
-<dt class="label-authors">Author:</dt>
+<dd class="expires"><time datetime="2027-04-19">19 April 2027</time></dd>
+<dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
       <div class="author-name">Y. Rosomakho</div>
 <div class="org">Zscaler</div>
 </div>
+<div class="author">
+      <div class="author-name">D. Benjamin</div>
+<div class="org">Google LLC</div>
+</div>
 </dd>
 </dl>
 </div>
-<h1 id="title">Deprecating Expanded ML-DSA Private Key Encodings</h1>
+<h1 id="title">Deprecating Expanded ML-DSA and ML-KEM Private Key Encodings</h1>
 <section id="section-abstract">
       <h2 id="abstract"><a href="#abstract" class="selfRef">Abstract</a></h2>
-<p id="section-abstract-1">This document updates RFC 9881 to require the seed representation when
-encoding Module-Lattice-Based Digital Signature Algorithm (ML-DSA) private
-keys for interchange. It deprecates the expandedKey and both
+<p id="section-abstract-1">This document updates RFC 9881 and RFC 9935 to require the seed representation
+when encoding Module-Lattice-Based Digital Signature Algorithm (ML-DSA) and
+Module-Lattice-Based Key-Encapsulation Mechanism (ML-KEM) private
+keys for interchange. It deprecates the expanded and combined
 representations, while permitting their continued support for legacy
 imports. These changes simplify implementation and improve
 interoperability by aligning the private-key representation with that
@@ -1132,7 +1139,7 @@ and Encryption (COSE). Internal private-key representations are unaffected.<a hr
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 18 April 2027.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 19 April 2027.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1194,7 +1201,7 @@ and Encryption (COSE). Internal private-key representations are unaffected.<a hr
             <p id="section-toc.1-1.8.1"><a href="#appendix-A" class="auto internal xref"></a><a href="#name-acknowledgments" class="internal xref">Acknowledgments</a></p>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.9">
-            <p id="section-toc.1-1.9.1"><a href="#appendix-B" class="auto internal xref"></a><a href="#name-authors-address" class="internal xref">Author's Address</a></p>
+            <p id="section-toc.1-1.9.1"><a href="#appendix-B" class="auto internal xref"></a><a href="#name-authors-addresses" class="internal xref">Authors' Addresses</a></p>
 </li>
         </ul>
 </nav>
@@ -1205,12 +1212,13 @@ and Encryption (COSE). Internal private-key representations are unaffected.<a hr
       <h2 id="name-introduction">
 <a href="#section-1" class="section-number selfRef">1. </a><a href="#name-introduction" class="section-name selfRef">Introduction</a>
       </h2>
-<p id="section-1-1"><span>[<a href="#X509-MLDSA" class="cite xref">X509-MLDSA</a>]</span> defines three representations for Module-Lattice-Based Digital
-Signature Algorithm (ML-DSA) private keys: a 32-octet seed, an expanded
+<p id="section-1-1"><span>[<a href="#X509-MLDSA" class="cite xref">X509-MLDSA</a>]</span> and <span>[<a href="#X509-MLKEM" class="cite xref">X509-MLKEM</a>]</span> define, respectively, three
+representations for Module-Lattice-Based Digital Signature Algorithm (ML-DSA)
+Module-Lattice-Based Key-Encapsulation Mechanism (ML-KEM) private keys: a 32-octet seed, an expanded
 private key, and a combination of the seed and expanded private key. The
 seed deterministically yields both the expanded private key and the public
-key. Although <span><a href="https://rfc-editor.org/rfc/rfc9881#section-8.1" class="relref">Section 8.1</a> of [<a href="#X509-MLDSA" class="cite xref">X509-MLDSA</a>]</span> recommends the seed
-representation, it permits all three representations for private-key
+key. Although <span><a href="https://rfc-editor.org/rfc/rfc9881#section-8.1" class="relref">Section 8.1</a> of [<a href="#X509-MLDSA" class="cite xref">X509-MLDSA</a>]</span> and <span><a href="https://rfc-editor.org/rfc/rfc9935#section-6" class="relref">Section 6</a> of [<a href="#X509-MLKEM" class="cite xref">X509-MLKEM</a>]</span>
+recommend the seed representation, they permit all three representations for private-key
 interchange.<a href="#section-1-1" class="pilcrow">¶</a></p>
 <p id="section-1-2">Multiple representations complicate interoperability between
 implementations that support different subsets of these formats. An
@@ -1219,16 +1227,15 @@ key without its seed. The combined representation also introduces a
 consistency check between the seed and expanded private key, which can
 require additional implementation support solely for importing that
 representation.<a href="#section-1-2" class="pilcrow">¶</a></p>
-<p id="section-1-3"><span>[<a href="#JOSE-COSE-MLDSA" class="cite xref">JOSE-COSE-MLDSA</a>]</span> specifies only the seed representation for ML-DSA private keys
+<p id="section-1-3"><span>[<a href="#JOSE-COSE-MLDSA" class="cite xref">JOSE-COSE-MLDSA</a>]</span> and <span>[<a href="#JOSE-COSE-MLKEM" class="cite xref">JOSE-COSE-MLKEM</a>]</span>
+specify only the seed representation for ML-DSA and ML-KEM private keys
 in JSON Object Signing and Encryption (JOSE) and CBOR Object Signing and
 Encryption (COSE). Using the seed representation consistently across these
 specifications simplifies private-key interchange and avoids the need to
 support multiple representations and their associated validation logic.<a href="#section-1-3" class="pilcrow">¶</a></p>
-<p id="section-1-4">This document updates <span>[<a href="#X509-MLDSA" class="cite xref">X509-MLDSA</a>]</span> to require the seed representation when
-encoding ML-DSA private keys for interchange and deprecates the expandedKey
-and both representations. Support for importing the deprecated
-representations remains optional for legacy compatibility. This document
-does not restrict internal private-key representations or change public
+<p id="section-1-4">This document updates <span>[<a href="#X509-MLDSA" class="cite xref">X509-MLDSA</a>]</span> and <span>[<a href="#X509-MLKEM" class="cite xref">X509-MLKEM</a>]</span> to deprecate the expanded and combined
+representations, limiting them to legacy compatibility where applicable. This
+document does not restrict internal private-key representations or change public
 keys, signatures, or their encodings.<a href="#section-1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
@@ -1248,26 +1255,34 @@ appear in all capitals, as shown here.<a href="#section-2-1" class="pilcrow">¶<
       <h2 id="name-updates-to-ml-dsa-private-k">
 <a href="#section-3" class="section-number selfRef">3. </a><a href="#name-updates-to-ml-dsa-private-k" class="section-name selfRef">Updates to ML-DSA Private Key Encoding</a>
       </h2>
-<p id="section-3-1">This section updates the private-key encoding requirements in
-<span><a href="https://rfc-editor.org/rfc/rfc9881#section-6" class="relref">Section 6</a> of [<a href="#X509-MLDSA" class="cite xref">X509-MLDSA</a>]</span> and the format recommendations in
+<p id="section-3-1">This section updates the private-key encoding requirements and format
+recommendations in <span><a href="https://rfc-editor.org/rfc/rfc9881#section-6" class="relref">Section 6</a> of [<a href="#X509-MLDSA" class="cite xref">X509-MLDSA</a>]</span>, <span><a href="https://rfc-editor.org/rfc/rfc9935#section-6" class="relref">Section 6</a> of [<a href="#X509-MLKEM" class="cite xref">X509-MLKEM</a>]</span>, and
 <span><a href="https://rfc-editor.org/rfc/rfc9881#section-8.1" class="relref">Section 8.1</a> of [<a href="#X509-MLDSA" class="cite xref">X509-MLDSA</a>]</span>. These updates apply to ML-DSA-44, ML-DSA-65,
-and ML-DSA-87.<a href="#section-3-1" class="pilcrow">¶</a></p>
-<p id="section-3-2">Implementations that encode or decode ML-DSA private keys for interchange
-using the structures defined in <span>[<a href="#X509-MLDSA" class="cite xref">X509-MLDSA</a>]</span> <span class="bcp14">MUST</span> support the seed
-representation. When encoding such a private key, implementations <span class="bcp14">MUST</span>
-use the seed alternative and <span class="bcp14">MUST NOT</span> use the expandedKey or both
-alternatives. This requirement replaces the permission to encode any of
-the three alternatives in <span><a href="https://rfc-editor.org/rfc/rfc9881#section-6" class="relref">Section 6</a> of [<a href="#X509-MLDSA" class="cite xref">X509-MLDSA</a>]</span> and
-<span><a href="https://rfc-editor.org/rfc/rfc9881#section-8.1" class="relref">Section 8.1</a> of [<a href="#X509-MLDSA" class="cite xref">X509-MLDSA</a>]</span>.<a href="#section-3-2" class="pilcrow">¶</a></p>
-<p id="section-3-3">The seed encoding remains unchanged: the privateKey field of
+ML-DSA-87, ML-KEM-512, ML-KEM-768, and ML-KEM-1024.<a href="#section-3-1" class="pilcrow">¶</a></p>
+<p id="section-3-2">Implementations that decode ML-DSA or ML-KEM private keys for interchange using
+the structures defined in <span>[<a href="#X509-MLDSA" class="cite xref">X509-MLDSA</a>]</span> and <span>[<a href="#X509-MLKEM" class="cite xref">X509-MLKEM</a>]</span> <span class="bcp14">MUST</span> support their
+respective <code>seed</code> representations.<a href="#section-3-2" class="pilcrow">¶</a></p>
+<p id="section-3-3">Implementations <span class="bcp14">MAY</span> support the <code>both</code> and <code>expandedKey</code> representations for
+compatibility with legacy systems, but this is optional and not required
+for conformance with this specification. If decoding the <code>both</code> representation,
+implementations <span class="bcp14">MUST</span> perform the consistency check described in
+<span><a href="https://rfc-editor.org/rfc/rfc9881#section-8.2" class="relref">Section 8.2</a> of [<a href="#X509-MLDSA" class="cite xref">X509-MLDSA</a>]</span> and <span><a href="https://rfc-editor.org/rfc/rfc9935#section-8" class="relref">Section 8</a> of [<a href="#X509-MLKEM" class="cite xref">X509-MLKEM</a>]</span>.<a href="#section-3-3" class="pilcrow">¶</a></p>
+<p id="section-3-4">When decoding a private key in either the <code>seed</code> or <code>both</code> representation,
+and when generating a new ML-DSA or ML-KEM key, implementations <span class="bcp14">MUST</span> retain the
+seed, unless the private key will never be encoded for interchange.<a href="#section-3-4" class="pilcrow">¶</a></p>
+<p id="section-3-5">Implementations that encode ML-DSA or ML-KEM private keys for interchange <span class="bcp14">MUST</span>
+use the <code>seed</code> representation, unless the key is a legacy key whose seed has
+been discarded. If (and only if) the seed was discarded, implementations <span class="bcp14">MAY</span> use
+the <code>expandedKey</code> representation. However, this encoding will not be
+interoperable with all implementations of this specification.<a href="#section-3-5" class="pilcrow">¶</a></p>
+<p id="section-3-6">Implementations <span class="bcp14">MUST NOT</span> output the <code>both</code> representation.<a href="#section-3-6" class="pilcrow">¶</a></p>
+<p id="section-3-7">The <code>seed</code> encoding remains unchanged: the <code>privateKey</code> field of
 OneAsymmetricKey contains the DER encoding of the implicitly tagged
-seed alternative, consisting of the octets 0x80 and 0x20 followed by the
-32-octet seed. The algorithm identifiers and the requirement that their
-parameters be absent remain unchanged. No new ASN.1 types or algorithm
-identifiers are defined.<a href="#section-3-3" class="pilcrow">¶</a></p>
-<p id="section-3-4">The expandedKey and both alternatives are deprecated. Implementations
-<span class="bcp14">MAY</span> support decoding these alternatives for legacy compatibility, but
-such support is not required for conformance to this specification.<a href="#section-3-4" class="pilcrow">¶</a></p>
+<code>seed</code> alternative. For ML-DSA, this consisting of the octets 0x80 and 0x20
+followed by the 32-octet seed. For ML-KEM, this consists of the octets 0x80 and
+0x40 followed by the 64-octet seed. The algorithm identifiers and the
+requirement that their parameters be absent remain unchanged. No new ASN.1 types
+or algorithm identifiers are defined.<a href="#section-3-7" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="migration">
@@ -1275,12 +1290,12 @@ such support is not required for conformance to this specification.<a href="#sec
       <h2 id="name-compatibility-and-migration">
 <a href="#section-4" class="section-number selfRef">4. </a><a href="#name-compatibility-and-migration" class="section-name selfRef">Compatibility and Migration Considerations</a>
       </h2>
-<p id="section-4-1">Existing private keys can be re-encoded in the seed representation when
-the original seed is available, including from the both representation.
+<p id="section-4-1">Existing private keys can be re-encoded in the <code>seed</code> representation when
+the original seed is available, including from the <code>both</code> representation.
 This conversion does not require replacing the key pair or reissuing
-certificates. Operators should ensure that seeds are retained for keys
+certificates. Operators <span class="bcp14">SHOULD</span> ensure that seeds are retained for keys
 that may need to be exported or restored into another implementation.<a href="#section-4-1" class="pilcrow">¶</a></p>
-<p id="section-4-2">As noted in <span><a href="https://rfc-editor.org/rfc/rfc9881#section-8.1" class="relref">Section 8.1</a> of [<a href="#X509-MLDSA" class="cite xref">X509-MLDSA</a>]</span>, a discarded seed cannot be
+<p id="section-4-2">As noted in <span><a href="https://rfc-editor.org/rfc/rfc9881#section-8.1" class="relref">Section 8.1</a> of [<a href="#X509-MLDSA" class="cite xref">X509-MLDSA</a>]</span> and <span><a href="https://rfc-editor.org/rfc/rfc9935#section-7" class="relref">Section 7</a> of [<a href="#X509-MLKEM" class="cite xref">X509-MLKEM</a>]</span>, a discarded seed cannot be
 recovered from the expanded private key. If no copy of the seed is
 available, migration to an implementation that accepts only seeds requires
 generating a new key pair and replacing any associated certificates or
@@ -1293,8 +1308,8 @@ implementations that support their stored representation.<a href="#section-4-2" 
       <h2 id="name-security-considerations">
 <a href="#section-5" class="section-number selfRef">5. </a><a href="#name-security-considerations" class="section-name selfRef">Security Considerations</a>
       </h2>
-<p id="section-5-1">The security considerations of <span>[<a href="#X509-MLDSA" class="cite xref">X509-MLDSA</a>]</span> continue to apply. The seed
-is sufficient to reconstruct the private key and generate signatures, so
+<p id="section-5-1">The security considerations of <span>[<a href="#X509-MLDSA" class="cite xref">X509-MLDSA</a>]</span> and <span>[<a href="#X509-MLKEM" class="cite xref">X509-MLKEM</a>]</span> continue to apply. The seed
+is sufficient to reconstruct the private key, so
 it requires the same protection as the expanded private key, including
 when retained in backups or transferred between implementations.<a href="#section-5-1" class="pilcrow">¶</a></p>
 </section>
@@ -1327,8 +1342,12 @@ when retained in backups or transferred between implementations.<a href="#sectio
 <span class="refAuthor">Leiba, B.</span>, <span class="refTitle">"Ambiguity of Uppercase vs Lowercase in RFC 2119 Key Words"</span>, <span class="seriesInfo">BCP 14</span>, <span class="seriesInfo">RFC 8174</span>, <span class="seriesInfo">DOI 10.17487/RFC8174</span>, <time datetime="2017-05" class="refDate">May 2017</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc8174">https://www.rfc-editor.org/rfc/rfc8174</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="X509-MLDSA">[X509-MLDSA]</dt>
-      <dd>
+        <dd>
 <span class="refAuthor">Massimo, J.</span>, <span class="refAuthor">Kampanakis, P.</span>, <span class="refAuthor">Turner, S.</span>, and <span class="refAuthor">B. E. Westerbaan</span>, <span class="refTitle">"Internet X.509 Public Key Infrastructure -- Algorithm Identifiers for the Module-Lattice-Based Digital Signature Algorithm (ML-DSA)"</span>, <span class="seriesInfo">RFC 9881</span>, <span class="seriesInfo">DOI 10.17487/RFC9881</span>, <time datetime="2025-10" class="refDate">October 2025</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc9881">https://www.rfc-editor.org/rfc/rfc9881</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="X509-MLKEM">[X509-MLKEM]</dt>
+      <dd>
+<span class="refAuthor">Turner, S.</span>, <span class="refAuthor">Kampanakis, P.</span>, <span class="refAuthor">Massimo, J.</span>, and <span class="refAuthor">B. E. Westerbaan</span>, <span class="refTitle">"Internet X.509 Public Key Infrastructure - Algorithm Identifiers for the Module-Lattice-Based Key-Encapsulation Mechanism (ML-KEM)"</span>, <span class="seriesInfo">RFC 9935</span>, <span class="seriesInfo">DOI 10.17487/RFC9935</span>, <time datetime="2026-03" class="refDate">March 2026</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc9935">https://www.rfc-editor.org/rfc/rfc9935</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 </dl>
 </section>
@@ -1340,8 +1359,12 @@ when retained in backups or transferred between implementations.<a href="#sectio
         </h3>
 <dl class="references">
 <dt id="JOSE-COSE-MLDSA">[JOSE-COSE-MLDSA]</dt>
-      <dd>
+        <dd>
 <span class="refAuthor">Prorock, M.</span> and <span class="refAuthor">O. Steele</span>, <span class="refTitle">"ML-DSA for JSON Object Signing and Encryption (JOSE) and CBOR Object Signing and Encryption (COSE)"</span>, <span class="seriesInfo">RFC 9964</span>, <span class="seriesInfo">DOI 10.17487/RFC9964</span>, <time datetime="2026-05" class="refDate">May 2026</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc9964">https://www.rfc-editor.org/rfc/rfc9964</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="JOSE-COSE-MLKEM">[JOSE-COSE-MLKEM]</dt>
+      <dd>
+<span class="refAuthor">Reddy.K, T.</span>, <span class="refAuthor">Banerjee, A.</span>, and <span class="refAuthor">H. Tschofenig</span>, <span class="refTitle">"Post-Quantum Key Encapsulation Mechanisms (PQ KEMs) for COSE"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-jose-pqc-kem-06</span>, <time datetime="2026-07-06" class="refDate">6 July 2026</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-jose-pqc-kem-06">https://datatracker.ietf.org/doc/html/draft-ietf-jose-pqc-kem-06</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 </dl>
 </section>
@@ -1358,8 +1381,8 @@ when retained in backups or transferred between implementations.<a href="#sectio
 </div>
 <div id="authors-addresses">
 <section id="appendix-B">
-      <h2 id="name-authors-address">
-<a href="#name-authors-address" class="section-name selfRef">Author's Address</a>
+      <h2 id="name-authors-addresses">
+<a href="#name-authors-addresses" class="section-name selfRef">Authors' Addresses</a>
       </h2>
 <address class="vcard">
         <div dir="auto" class="left"><span class="fn nameRole">Yaroslav Rosomakho</span></div>
@@ -1367,6 +1390,14 @@ when retained in backups or transferred between implementations.<a href="#sectio
 <div class="email">
 <span>Email:</span>
 <a href="mailto:yrosomakho@zscaler.com" class="email">yrosomakho@zscaler.com</a>
+</div>
+</address>
+<address class="vcard">
+        <div dir="auto" class="left"><span class="fn nameRole">David Benjamin</span></div>
+<div dir="auto" class="left"><span class="org">Google LLC</span></div>
+<div class="email">
+<span>Email:</span>
+<a href="mailto:davidben@google.com" class="email">davidben@google.com</a>
 </div>
 </address>
 </section>
