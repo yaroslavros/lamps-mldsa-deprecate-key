@@ -1,0 +1,102 @@
+{
+  "magic": "E!vIA5L86J2I",
+  "timestamp": "2026-10-18T04:06:15.920099+00:00",
+  "repo": "yaroslavros/lamps-mldsa-deprecate-key",
+  "labels": [
+    {
+      "name": "accessibility",
+      "description": "Barrier affecting people with disabilities",
+      "color": "f143ab"
+    },
+    {
+      "name": "bug",
+      "description": "Something isn't working",
+      "color": "d73a4a"
+    },
+    {
+      "name": "documentation",
+      "description": "Improvements or additions to documentation",
+      "color": "0075ca"
+    },
+    {
+      "name": "duplicate",
+      "description": "This issue or pull request already exists",
+      "color": "cfd3d7"
+    },
+    {
+      "name": "enhancement",
+      "description": "New feature or request",
+      "color": "a2eeef"
+    },
+    {
+      "name": "good first issue",
+      "description": "Good for newcomers",
+      "color": "7057ff"
+    },
+    {
+      "name": "help wanted",
+      "description": "Extra attention is needed",
+      "color": "008672"
+    },
+    {
+      "name": "invalid",
+      "description": "This doesn't seem right",
+      "color": "e4e669"
+    },
+    {
+      "name": "question",
+      "description": "Further information is requested",
+      "color": "d876e3"
+    },
+    {
+      "name": "wontfix",
+      "description": "This will not be worked on",
+      "color": "ffffff"
+    }
+  ],
+  "issues": [],
+  "pulls": [
+    {
+      "number": 1,
+      "id": "PR_kwDOVLFhG88AAAABIt5Vyg",
+      "title": "Various changes from email",
+      "url": "https://github.com/yaroslavros/lamps-mldsa-deprecate-key/pull/1",
+      "state": "MERGED",
+      "author": "davidben",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "* Tag representation names in backticks, otherwise \"both\" is very hard to read.\n* Soften the requirements slightly. You can still encoded `expandedKey` if you must, but be warned it will not\nbe interoperable. `both` is right out.\n* Do ML-KEM as well\n* Add myself as co-author per email discussion\n\nChanges in separate commits. Happy to split into several PRs if you prefer.",
+      "createdAt": "2026-10-15T21:16:07Z",
+      "updatedAt": "2026-10-16T20:15:47Z",
+      "baseRepository": "yaroslavros/lamps-mldsa-deprecate-key",
+      "baseRefName": "main",
+      "baseRefOid": "4e60f95a6dff2c073147c57b3213b88144502d2f",
+      "headRepository": "davidben/lamps-mldsa-deprecate-key",
+      "headRefName": "misc",
+      "headRefOid": "cb53a4af8f916dd546be9798dce3bc2672891abe",
+      "closedAt": "2026-10-16T19:45:36Z",
+      "mergedAt": "2026-10-16T19:45:36Z",
+      "mergedBy": "yaroslavros",
+      "mergeCommit": {
+        "oid": "5b89fd6cc6a54ebe007aeb0972f8cd2939c9cd5b"
+      },
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDOVLFhG88AAAABSvnAKg",
+          "commit": {
+            "abbreviatedOid": "cb53a4a"
+          },
+          "author": "yaroslavros",
+          "authorAssociation": "OWNER",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2026-10-16T19:45:26Z",
+          "updatedAt": "2026-10-16T19:45:26Z",
+          "comments": []
+        }
+      ]
+    }
+  ]
+}
