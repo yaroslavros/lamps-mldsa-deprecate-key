@@ -83,10 +83,9 @@ Encryption (COSE). Using the seed representation consistently across these
 specifications simplifies private-key interchange and avoids the need to
 support multiple representations and their associated validation logic.
 
-This document updates {{X509-MLDSA}} and {{X509-MLKEM}} to deprecate the expanded and combined
-representations, limiting them to legacy compatibility where applicable. This
-document does not restrict internal private-key representations or change public
-keys, signatures, or their encodings.
+This document updates {{X509-MLDSA}} and {{X509-MLKEM}} to deprecate the
+expanded and combined representations, limiting them to legacy compatibility
+where applicable.
 
 
 # Conventions and Definitions
@@ -123,28 +122,28 @@ interoperable with all implementations of this specification.
 
 Implementations MUST NOT output the `both` representation.
 
-The `seed` encoding remains unchanged: the `privateKey` field of
-OneAsymmetricKey contains the DER encoding of the implicitly tagged
-`seed` alternative. For ML-DSA, this consisting of the octets 0x80 and 0x20
-followed by the 32-octet seed. For ML-KEM, this consists of the octets 0x80 and
-0x40 followed by the 64-octet seed. The algorithm identifiers and the
-requirement that their parameters be absent remain unchanged. No new ASN.1 types
-or algorithm identifiers are defined.
-
 # Compatibility and Migration Considerations {#migration}
 
 Existing private keys can be re-encoded in the `seed` representation when
 the original seed is available, including from the `both` representation.
 This conversion does not require replacing the key pair or reissuing
-certificates. Operators SHOULD ensure that seeds are retained for keys
-that may need to be exported or restored into another implementation.
+certificates.
+
+Expanded private keys can be computed from seeds, so the `seed` representation
+can be imported into a legacy implementation that expects expanded private keys.
+When doing so, operators SHOULD ensure that seeds are retained for keys that may
+need to be exported or restored into another implementation.
 
 As noted in {{Section 8.1 of X509-MLDSA}} and {{Section 7 of X509-MLKEM}}, a discarded seed cannot be
 recovered from the expanded private key. If no copy of the seed is
 available, migration to an implementation that accepts only seeds requires
 generating a new key pair and replacing any associated certificates or
-other public-key bindings. Existing keys can continue to be used by
-implementations that support their stored representation.
+other public-key bindings.
+
+However, such existing keys MAY continue to be used by implementations that
+support this representation. This document still optionally permits the
+`expandedKey` encoding for such cases. It also places no constraints on keys
+that are never exported for interchange.
 
 
 # Security Considerations {#security}
