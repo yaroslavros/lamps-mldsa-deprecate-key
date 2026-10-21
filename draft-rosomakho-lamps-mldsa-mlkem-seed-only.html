@@ -33,11 +33,11 @@ and Encryption (COSE). Internal private-key representations are unaffected.
     Jinja2 3.1.6
     lxml 6.1.1
     natsort 8.4.0
-    platformdirs 4.12.2
+    platformdirs 4.13.4
     pycountry 24.6.1
     PyYAML 6.0.3
     requests 2.33.1
-    wcwidth 0.9.1
+    wcwidth 0.9.2
 -->
 <link href="draft-rosomakho-lamps-mldsa-mlkem-seed-only.xml" rel="alternate" type="application/rfc+xml">
 <link href="#copyright" rel="license">
@@ -1057,7 +1057,7 @@ svg {
 </tr></thead>
 <tfoot><tr>
 <td class="left">Rosomakho &amp; Benjamin</td>
-<td class="center">Expires 19 April 2027</td>
+<td class="center">Expires 24 April 2027</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1073,12 +1073,12 @@ svg {
 <a href="https://www.rfc-editor.org/rfc/rfc9881" class="eref">9881</a>, <a href="https://www.rfc-editor.org/rfc/rfc9935" class="eref">9935</a> (if approved)</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2026-10-16" class="published">16 October 2026</time>
+<time datetime="2026-10-21" class="published">21 October 2026</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Standards Track</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2027-04-19">19 April 2027</time></dd>
+<dd class="expires"><time datetime="2027-04-24">24 April 2027</time></dd>
 <dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
@@ -1140,7 +1140,7 @@ and Encryption (COSE). Internal private-key representations are unaffected.<a hr
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 19 April 2027.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 24 April 2027.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1234,10 +1234,9 @@ in JSON Object Signing and Encryption (JOSE) and CBOR Object Signing and
 Encryption (COSE). Using the seed representation consistently across these
 specifications simplifies private-key interchange and avoids the need to
 support multiple representations and their associated validation logic.<a href="#section-1-3" class="pilcrow">¶</a></p>
-<p id="section-1-4">This document updates <span>[<a href="#X509-MLDSA" class="cite xref">X509-MLDSA</a>]</span> and <span>[<a href="#X509-MLKEM" class="cite xref">X509-MLKEM</a>]</span> to deprecate the expanded and combined
-representations, limiting them to legacy compatibility where applicable. This
-document does not restrict internal private-key representations or change public
-keys, signatures, or their encodings.<a href="#section-1-4" class="pilcrow">¶</a></p>
+<p id="section-1-4">This document updates <span>[<a href="#X509-MLDSA" class="cite xref">X509-MLDSA</a>]</span> and <span>[<a href="#X509-MLKEM" class="cite xref">X509-MLKEM</a>]</span> to deprecate the
+expanded and combined representations, limiting them to legacy compatibility
+where applicable.<a href="#section-1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="conventions-and-definitions">
@@ -1277,13 +1276,6 @@ been discarded. If (and only if) the seed was discarded, implementations <span c
 the <code>expandedKey</code> representation. However, this encoding will not be
 interoperable with all implementations of this specification.<a href="#section-3-5" class="pilcrow">¶</a></p>
 <p id="section-3-6">Implementations <span class="bcp14">MUST NOT</span> output the <code>both</code> representation.<a href="#section-3-6" class="pilcrow">¶</a></p>
-<p id="section-3-7">The <code>seed</code> encoding remains unchanged: the <code>privateKey</code> field of
-OneAsymmetricKey contains the DER encoding of the implicitly tagged
-<code>seed</code> alternative. For ML-DSA, this consisting of the octets 0x80 and 0x20
-followed by the 32-octet seed. For ML-KEM, this consists of the octets 0x80 and
-0x40 followed by the 64-octet seed. The algorithm identifiers and the
-requirement that their parameters be absent remain unchanged. No new ASN.1 types
-or algorithm identifiers are defined.<a href="#section-3-7" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="migration">
@@ -1294,14 +1286,20 @@ or algorithm identifiers are defined.<a href="#section-3-7" class="pilcrow">¶</
 <p id="section-4-1">Existing private keys can be re-encoded in the <code>seed</code> representation when
 the original seed is available, including from the <code>both</code> representation.
 This conversion does not require replacing the key pair or reissuing
-certificates. Operators <span class="bcp14">SHOULD</span> ensure that seeds are retained for keys
-that may need to be exported or restored into another implementation.<a href="#section-4-1" class="pilcrow">¶</a></p>
-<p id="section-4-2">As noted in <span><a href="https://rfc-editor.org/rfc/rfc9881#section-8.1" class="relref">Section 8.1</a> of [<a href="#X509-MLDSA" class="cite xref">X509-MLDSA</a>]</span> and <span><a href="https://rfc-editor.org/rfc/rfc9935#section-7" class="relref">Section 7</a> of [<a href="#X509-MLKEM" class="cite xref">X509-MLKEM</a>]</span>, a discarded seed cannot be
+certificates.<a href="#section-4-1" class="pilcrow">¶</a></p>
+<p id="section-4-2">Expanded private keys can be computed from seeds, so the <code>seed</code> representation
+can be imported into a legacy implementation that expects expanded private keys.
+When doing so, operators <span class="bcp14">SHOULD</span> ensure that seeds are retained for keys that may
+need to be exported or restored into another implementation.<a href="#section-4-2" class="pilcrow">¶</a></p>
+<p id="section-4-3">As noted in <span><a href="https://rfc-editor.org/rfc/rfc9881#section-8.1" class="relref">Section 8.1</a> of [<a href="#X509-MLDSA" class="cite xref">X509-MLDSA</a>]</span> and <span><a href="https://rfc-editor.org/rfc/rfc9935#section-7" class="relref">Section 7</a> of [<a href="#X509-MLKEM" class="cite xref">X509-MLKEM</a>]</span>, a discarded seed cannot be
 recovered from the expanded private key. If no copy of the seed is
 available, migration to an implementation that accepts only seeds requires
 generating a new key pair and replacing any associated certificates or
-other public-key bindings. Existing keys can continue to be used by
-implementations that support their stored representation.<a href="#section-4-2" class="pilcrow">¶</a></p>
+other public-key bindings.<a href="#section-4-3" class="pilcrow">¶</a></p>
+<p id="section-4-4">However, such existing keys <span class="bcp14">MAY</span> continue to be used by implementations that
+support this representation. This document still optionally permits the
+<code>expandedKey</code> encoding for such cases. It also places no constraints on keys
+that are never exported for interchange.<a href="#section-4-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="security">
