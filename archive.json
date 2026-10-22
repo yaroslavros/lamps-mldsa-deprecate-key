@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2026-10-20T04:27:24.013696+00:00",
+  "timestamp": "2026-10-22T04:18:18.509325+00:00",
   "repo": "yaroslavros/lamps-mldsa-deprecate-key",
   "labels": [
     {
@@ -94,6 +94,48 @@
           "body": "",
           "createdAt": "2026-10-16T19:45:26Z",
           "updatedAt": "2026-10-16T19:45:26Z",
+          "comments": []
+        }
+      ]
+    },
+    {
+      "number": 2,
+      "id": "PR_kwDOVLFhG88AAAABJoLqKA",
+      "title": "Take another pass over the text",
+      "url": "https://github.com/yaroslavros/lamps-mldsa-deprecate-key/pull/2",
+      "state": "MERGED",
+      "author": "davidben",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "- This document does have *some* opinion about private key representations in that we'd like you to keep the seed around.\n\n- Drop the \"The `seed` encoding remains unchanged [...]\" paragraph. I'm not sure it's bringing any value.\n\n- Say a bit more about legacy expandedKey-based implementations: say explicitly that they can still import seeds just fine, and that we still permit them to interoperate between themselves if they need it.",
+      "createdAt": "2026-10-20T19:15:35Z",
+      "updatedAt": "2026-10-21T21:28:28Z",
+      "baseRepository": "yaroslavros/lamps-mldsa-deprecate-key",
+      "baseRefName": "main",
+      "baseRefOid": "93f67c372eaf8fa0e86e6aacd77c36d5a0b559c5",
+      "headRepository": "davidben/lamps-mldsa-deprecate-key",
+      "headRefName": "misc-edits",
+      "headRefOid": "fc211c76e14432f8c949e0eaec4ea15d3e2d8934",
+      "closedAt": "2026-10-21T21:28:28Z",
+      "mergedAt": "2026-10-21T21:28:28Z",
+      "mergedBy": "yaroslavros",
+      "mergeCommit": {
+        "oid": "8c2ff4599739711e86c23ce2888f5deebb30bdcf"
+      },
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDOVLFhG88AAAABTivayg",
+          "commit": {
+            "abbreviatedOid": "fc211c7"
+          },
+          "author": "yaroslavros",
+          "authorAssociation": "OWNER",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2026-10-21T21:28:09Z",
+          "updatedAt": "2026-10-21T21:28:09Z",
           "comments": []
         }
       ]
